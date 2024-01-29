@@ -5,163 +5,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
   <title>Document</title>
 </head>
 
 <body>
   <div>
-    <label for="customInput">Type DateTime</label>
-    <input id="customInput" type="text">
+    <label for="customInputField">Type DateTime</label>
+    <input id="customInputField" type="text">
   </div>
 
   <p>OR</p>
 
-  <div id="yearPickerContainer">
-    <select id="yearPicker" onchange="updateMonthPicker()">
-      <option value="">Select Year</option>
-      <!-- Populate year options with JS -->
-    </select>
+  <div>
+    <input type="text" id="flatpickrField" placeholder="Select Date Time">
   </div>
 
-
-  <div id="monthPickerContainer" style="display:none;">
-    <select id="monthPicker" onchange="updateDayPicker()">
-      <option value="">Select Month</option>
-      <!-- Populate month options with JS -->
-    </select>
-  </div>
-  <div id="dayPickerContainer" style="display:none;">
-    <select id="dayPicker" onchange="updateTimePicker()">
-      <option value="">Select Day</option>
-      <!-- Populate day options with JS -->
-    </select>
-  </div>
-  <div id="timePickerContainer" style="display:none;">
-    <select id="timePicker" onchange="addTimeToCustomInput()">
-      <option value="">Select Time</option>
-      <!-- Populate time options with JS -->
-    </select>
-  </div>
-
-  <button onclick="onSubmit()">Submit</button>
 
   <script>
+    const customInput = document.getElementById('customInputField');
+    let dateParts = { year: '', month: '', day: '', hour: '', minute: '', zone: '' };
 
-    // Call this function when the page loads
-    populateYearPicker();
+    flatpickr("#flatpickrField", {
+      enableTime: true,
+      time_24hr: true,
+      dateFormat: "Y-m-d H:i",
 
-    function populateYearPicker() {
-      const yearPicker = document.getElementById("yearPicker");
-      const currentYear = new Date().getFullYear();
-      for (let year = 2000; year <= currentYear; year++) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        yearPicker.appendChild(option);
-      }
-    }
+      // Triggered when the user selects a date, or changes the time on a selected date
+      onChange: function (selectedDates, dateStr, instance) {
+        // Capture the current date and time
+        dateParts.hour = selectedDates[0].getHours();
+        dateParts.minute = selectedDates[0].getMinutes();
+        dateParts.zone = selectedDates[0].getTimezoneOffset();
+        dateParts.day = instance.currentYear + "-" + (instance.currentMonth + 1) + "-" + selectedDates[0].getDate();
+        // Update the custom input field
+        customInput.value = dateParts.day + " " + dateParts.hour + ":" + dateParts.minute + " " + dateParts.zone + "z";
+      },
 
+      // Triggered when the month is changed, either by the user or programmatically
+      onMonthChange: function (selectedDates, dateStr, instance) {
+        // Capture the current month
+        dateParts.month = instance.currentYear + "-" + (instance.currentMonth + 1);
+        // Update the custom input field
+        customInput.value = dateParts.month;
+      },
 
-    function updateMonthPicker() {
-      const year = document.getElementById("yearPicker").value;
-      if (year) {
-        // add year to the custom input
-        document.getElementById("customInput").value = year;
-
-        const monthPicker = document.getElementById("monthPicker");
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        months.forEach((month, index) => {
-          const option = document.createElement("option");
-          option.value = index + 1;
-          option.textContent = month;
-          monthPicker.appendChild(option);
-        });
-
-        // Hide year picker and show month picker
-        document.getElementById("yearPickerContainer").style.display = "none";
-        document.getElementById("monthPickerContainer").style.display = "block";
-      }
-    }
-
-    function updateDayPicker() {
-      const month = parseInt(document.getElementById("monthPicker").value);
-      if (month) {
-        // add month to the custom input
-        document.getElementById("customInput").value += "-" + month;
-
-        const year = parseInt(document.getElementById("yearPicker").value);
-        const dayPicker = document.getElementById("dayPicker");
-
-        const daysInMonth = new Date(year, month, 0).getDate();
-        for (let day = 1; day <= daysInMonth; day++) {
-          const option = document.createElement("option");
-          option.value = day;
-          option.textContent = day;
-          dayPicker.appendChild(option);
-        }
-
-        // Hide month picker and show day picker
-        document.getElementById("monthPickerContainer").style.display = "none";
-        document.getElementById("dayPickerContainer").style.display = "block";
-      }
-    }
-
-    function updateTimePicker() {
-      const day = document.getElementById("dayPicker").value;
-      if (day) {
-        // add day to the custom input
-        document.getElementById("customInput").value += "-" + day;
-
-        const timePicker = document.getElementById("timePicker");
-        for (let hour = 0; hour < 24; hour++) {
-          const option = document.createElement("option");
-          option.value = hour;
-          option.textContent = hour + ":00"; // Format as needed
-          timePicker.appendChild(option);
-        }
-
-        // Hide day picker and show time picker
-        document.getElementById("dayPickerContainer").style.display = "none";
-        document.getElementById("timePickerContainer").style.display = "block";
-      }
-    }
-
-    function addTimeToCustomInput() {
-      const time = document.getElementById("timePicker").value;
-      if (time) {
-        // add time to the custom input
-        document.getElementById("customInput").value += " " + time + ":00:00";
-
-      }
-    }
-
-    function onSubmit() {
-      const res = document.getElementById("customInput").value;
-      alert("Your datetime is: " + res);
-    }
-
-    // disable and reset picker if user types in the custom input
-    document.getElementById("customInput").addEventListener("input", function () {
-      if (this.value) {
-        document.getElementById("yearPicker").disabled = true;
-      } else {
-        document.getElementById("yearPicker").disabled = false;
-      }
-      resetFields();
+      // Triggered when the year is changed, either by the user or programmatically
+      onYearChange: function (selectedDates, dateStr, instance) {
+        // Capture the current year
+        dateParts.year = instance.currentYear;
+        // Update the custom input field
+        customInput.value = dateParts.year;
+      },
     });
-
-    function resetFields() {
-      document.getElementById("yearPicker").value = "";
-      document.getElementById("monthPicker").value = "";
-      document.getElementById("dayPicker").value = "";
-      document.getElementById("timePicker").value = "";
-
-      document.getElementById("yearPickerContainer").style.display = "block";
-      document.getElementById("monthPickerContainer").style.display = "none";
-      document.getElementById("dayPickerContainer").style.display = "none";
-      document.getElementById("timePickerContainer").style.display = "none";
-    }
-
   </script>
 </body>
 
