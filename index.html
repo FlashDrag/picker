@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.44/moment-timezone.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.44/moment-timezone-with-data.min.js"></script>
+
   <link rel="stylesheet" href="style.css">
 
   <title>DateTime Picker</title>
@@ -23,7 +28,8 @@
     <input type="text" id="flatpickrCalendar" placeholder="▼ Select Date">
   </div>
 
-  <script defer src="script.js"></script>
+  <script defer type="module" src="script.js"></script>
+  <script defer type="module" src="timeZone.js"></script>
 </body>
 
 </html>

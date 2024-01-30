@@ -1,6 +1,8 @@
+import timezoneSelector from "./timeZone.js";
+
 const customInput = document.getElementById("customInputField");
 const dateParts = { year: "", month: "", day: "" };
-const timeParts = { hour: "", minute: "", second: "" };
+const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
 function updateCustomInputWithDate() {
   customInput.value = Object.values(dateParts).filter(Boolean).join("-");
@@ -24,9 +26,10 @@ function updateCustomInputWithTime() {
     timeString += ":" + timeParts.second;
   }
 
-  // Adding time string to the input value if any time component is present
+  // Add time string with timezone to the input value if any time component is present
   if (timeString) {
-    customInput.value += " " + timeString;
+    timeParts.timezone = timezoneSelector.value;
+    customInput.value += " " + timeString + " " + "z" + timezoneSelector.value;
   }
 }
 
@@ -37,14 +40,18 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   enableSeconds: true,
   time_24hr: true,
   onReady: function (selectedDates, dateStr, instance) {
+    // Add timezone dropdown to the calendar
+    instance.calendarContainer.appendChild(timezoneSelector);
+
+    // TODO: move today button to the top of the calendar
     const todayButton = document.createElement("button");
+    todayButton.style.cssText = `display: none;`;
     todayButton.type = "button";
     todayButton.className = "flatpickr-today-button";
     todayButton.textContent = "Today";
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0);
-
 
     todayButton.addEventListener("click", function () {
       instance.setDate(currentDate);
@@ -60,6 +67,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     });
 
     instance.calendarContainer.appendChild(todayButton);
+    // ./move today button to the top of the calendar
   },
 
   onOpen: function (selectedDates, dateStr, instance) {
@@ -91,8 +99,8 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     updateCustomInputWithDate();
     updateCustomInputWithTime();
 
-    // prevent focus on hour input and focus on close button
-    document.querySelector(".flatpickr-day.today").focus();
+    // TODO: prevent focus on hour input and focus on close button
+    // document.querySelector(".flatpickr-day").focus();
   },
 
   // Triggered when the month is changed, either by the user or programmatically
@@ -126,11 +134,19 @@ document
     updateCustomInputWithTime();
   });
 
-// reset opacity of time picker when the user hover over it
+// reset opacity of time picker and timezone when the user hover over it
 document
   .querySelector(".flatpickr-calendar.hasTime .flatpickr-time")
   .addEventListener("mouseover", function (e) {
     document.querySelector(
       ".flatpickr-calendar.hasTime .flatpickr-time"
     ).style.opacity = 1;
+    document.querySelector("#timezoneSelector").style.opacity = 1;
   });
+
+// update custom input field with the selected timezone
+timezoneSelector.addEventListener("change", function () {
+  timeParts.timezone = timezoneSelector.value;
+  updateCustomInputWithDate();
+  updateCustomInputWithTime();
+});

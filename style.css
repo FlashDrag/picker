@@ -11,10 +11,6 @@
   flex-direction: column;
 }
 
-.flatpickr-calendar.hasTime .flatpickr-time {
-  opacity: 0.3;
-  background-color: #f5f5f5b1;
-}
 
 .flatpickr-today-button {
   background-color: #f5f5f5b1;
@@ -30,4 +26,20 @@
 .flatpickr-today-button:hover {
   background: #e6e6e6;
   border-color: #e6e6e6;
+}
+
+/* Timepicker */
+.flatpickr-calendar.hasTime .flatpickr-time {
+  opacity: 0.3;
+  background-color: #f5f5f5b1;
+  transition: 0.2s;
+}
+
+/* Timezone selector */
+#timezoneSelector{
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  opacity: 0.3;
+  transition: 0.2s;
 }
