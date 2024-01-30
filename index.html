@@ -9,20 +9,32 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
   <title>Document</title>
+
+  <style>
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
 </head>
 
 <body>
-  <div>
-    <label for="customInputField">Type DateTime</label>
-    <input id="customInputField" type="text">
+  <div class="container">
+    <div class="form-group">
+      <label for="customInputField">Type DateTime</label>
+      <input id="customInputField" type="text">
+    </div>
+
+    <input type="text" id="flatpickrCalendar" placeholder="Select DateTime">
   </div>
 
-  <p>OR</p>
-
-  <div>
-    <input type="text" id="flatpickrCalendar" placeholder="Select Date">
-    <input type="text" id="flatpickrTime" placeholder="Select Time" style="display: none;">
-  </div>
 
 
   <script>
@@ -61,38 +73,41 @@
 
 
     const fpCalendar = flatpickr("#flatpickrCalendar", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i:S",
+      defaultHour: 0,
+      enableSeconds: true,
+      time_24hr: true,
       onOpen: function (selectedDates, dateStr, instance) {
         // Capture the current year
         dateParts.year = instance.currentYear;
 
         updateCustomInputWithDate();
+        updateCustomInputWithTime();
       },
 
       onClose: function (selectedDates, dateStr, instance) {
-        updateCustomInputWithDate();
+        console.log('onClose');
 
         // clear flatpickrCalendar input and flatpickrTime input
         document.getElementById('flatpickrCalendar').value = '';
-        document.getElementById('flatpickrTime').value = '';
+
+        updateCustomInputWithDate();
+        updateCustomInputWithTime();
       },
 
       // Triggered when the user selects a date, or changes the time on a selected date
       onChange: function (selectedDates, dateStr, instance) {
         // Capture the current date
+        dateParts.year = selectedDates[0].getFullYear();
         dateParts.month = selectedDates[0].getMonth() + 1;
         dateParts.day = selectedDates[0].getDate();
+        timeParts.hour = selectedDates[0].getHours();
+        timeParts.minute = selectedDates[0].getMinutes();
+        timeParts.second = selectedDates[0].getSeconds();
 
         updateCustomInputWithDate();
-
-        // Close the calendar
-        instance.close();
-
-        // hide the input calendar and show the input time
-        document.getElementById('flatpickrCalendar').style.display = 'none';
-        document.getElementById('flatpickrTime').style.display = 'block';
-
-        // open the input time instance
-        fpTime.open();
+        updateCustomInputWithTime();
       },
 
       // Triggered when the month is changed, either by the user or programmatically
@@ -101,6 +116,7 @@
         dateParts.month = instance.currentMonth + 1;
 
         updateCustomInputWithDate();
+        updateCustomInputWithTime();
       },
 
       // Triggered when the year is changed, either by the user or programmatically
@@ -109,6 +125,7 @@
         dateParts.year = instance.currentYear;
 
         updateCustomInputWithDate();
+        updateCustomInputWithTime();
       },
     });
 
@@ -119,34 +136,7 @@
       dateParts.month = fpCalendar.currentMonth + 1;
 
       updateCustomInputWithDate();
-    });
-
-
-    const fpTime = flatpickr("#flatpickrTime", {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: "H:i:S",
-      defaultHour: 0,
-      enableSeconds: true,
-      time_24hr: true,
-      onChange: function (selectedDates, dateStr, instance) {
-        // Capture the current date and time
-        timeParts.hour = selectedDates[0].getHours();
-        timeParts.minute = selectedDates[0].getMinutes();
-        timeParts.second = selectedDates[0].getSeconds();
-        // timeParts.zone = selectedDates[0].getTimezoneOffset();
-
-        updateCustomInputWithDate();
-        updateCustomInputWithTime();
-      },
-      onClose: function (selectedDates, dateStr, instance) {
-        updateCustomInputWithDate();
-        updateCustomInputWithTime();
-
-        // replace the input time with the input calendar
-        document.getElementById('flatpickrCalendar').style.display = 'block';
-        document.getElementById('flatpickrTime').style.display = 'none';
-      }
+      updateCustomInputWithTime();
     });
 
   </script>
