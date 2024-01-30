@@ -4,6 +4,30 @@ const customInput = document.getElementById("customInputField");
 const dateParts = { year: "", month: "", day: "" };
 const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
+
+// TODO: move today button to the top of the calendar
+const todayButton = document.querySelector(".today-btn");
+
+todayButton.addEventListener("click", function () {
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0);
+
+  // instance.setDate(currentDate);
+
+  dateParts.year = currentDate.getFullYear();
+  dateParts.month = currentDate.getMonth() + 1;
+  dateParts.day = currentDate.getDate();
+  timeParts.hour = currentDate.getHours();
+  timeParts.minute = currentDate.getMinutes();
+  timeParts.second = currentDate.getSeconds();
+
+  updateCustomInputWithDate();
+  updateCustomInputWithTime();
+
+  flatpickrCalendar.value = "";
+});
+
+
 function updateCustomInputWithDate() {
   customInput.value = Object.values(dateParts).filter(Boolean).join("-");
 }
@@ -42,32 +66,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   onReady: function (selectedDates, dateStr, instance) {
     // Add timezone dropdown to the calendar
     instance.calendarContainer.appendChild(timezoneSelector);
-
-    // TODO: move today button to the top of the calendar
-    const todayButton = document.createElement("button");
-    todayButton.style.cssText = `display: none;`;
-    todayButton.type = "button";
-    todayButton.className = "flatpickr-today-button";
-    todayButton.textContent = "Today";
-
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0);
-
-    todayButton.addEventListener("click", function () {
-      instance.setDate(currentDate);
-
-      dateParts.year = currentDate.getFullYear();
-      dateParts.month = currentDate.getMonth() + 1;
-      dateParts.day = currentDate.getDate();
-
-      updateCustomInputWithDate();
-      updateCustomInputWithTime();
-
-      instance.close();
-    });
-
-    instance.calendarContainer.appendChild(todayButton);
-    // ./move today button to the top of the calendar
   },
 
   onOpen: function (selectedDates, dateStr, instance) {

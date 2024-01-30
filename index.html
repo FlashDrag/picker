@@ -20,12 +20,17 @@
 
 <body>
   <div class="container">
-    <div class="form-group">
-      <label for="customInputField">Type Date</label>
-      <input id="customInputField" type="text">
-    </div>
+    <div class="form-container">
 
-    <input type="text" id="flatpickrCalendar" placeholder="▼ Select Date">
+      <div class="form-group">
+        <input id="customInputField" type="text" placeholder="Type Date">
+        <button class="today-btn">Today</button>
+      </div>
+
+      <div>
+        <input type="text" id="flatpickrCalendar" placeholder="▼ Select Date">
+      </div>
+    </div>
   </div>
 
   <script defer type="module" src="script.js"></script>
