@@ -4,9 +4,28 @@ const customInput = document.getElementById("customInputField");
 const dateParts = { year: "", month: "", day: "" };
 const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
-
-// TODO: move today button to the top of the calendar
 const todayButton = document.querySelector(".today-btn");
+
+const nullflavorDropdown = document.getElementById("nullflavorDropdown");
+
+nullflavorDropdown.addEventListener("change", function () {
+  // reset flatpickrCalendar
+  flatpickrCalendar.value = "";
+
+  // reset dateParts and timeParts
+  Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
+  Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
+
+  if (nullflavorDropdown.value === "") {
+  // make the select dropdown grey when the user selects the default option
+    nullflavorDropdown.style.color = "#999";
+    customInput.value = "";
+  } else {
+    nullflavorDropdown.style.color = "#000";
+    customInput.value = nullflavorDropdown.value;
+  }
+});
+
 
 todayButton.addEventListener("click", function () {
   const currentDate = new Date();
@@ -25,6 +44,10 @@ todayButton.addEventListener("click", function () {
   updateCustomInputWithTime();
 
   flatpickrCalendar.value = "";
+
+  // reset nullflavorDropdown
+  nullflavorDropdown.style.color = "#999";
+  nullflavorDropdown.value = "";
 });
 
 
@@ -69,6 +92,11 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   },
 
   onOpen: function (selectedDates, dateStr, instance) {
+
+    // reset nullflavorDropdown
+    nullflavorDropdown.value = "";
+    nullflavorDropdown.style.color = "#999";
+
     // Capture the current year
     dateParts.year = instance.currentYear;
 
@@ -97,8 +125,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     updateCustomInputWithDate();
     updateCustomInputWithTime();
 
-    // TODO: prevent focus on hour input and focus on close button
-    // document.querySelector(".flatpickr-day").focus();
   },
 
   // Triggered when the month is changed, either by the user or programmatically

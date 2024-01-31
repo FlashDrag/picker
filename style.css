@@ -18,7 +18,6 @@ body {
 
 .form-group {
   display: inline-block;
-  /* flex-direction: column; */
 }
 
 
@@ -35,6 +34,33 @@ body {
 .today-btn:hover {
   background-color: #3b61b8;
 }
+
+/* Selectors container */
+.selectors-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* nullFlavor */
+#nullflavorDropdown {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+#nullflavorDropdown, #nullflavorDropdown option[value=""], .selected-option {
+  color: #999;
+}
+
+select,
+select option {
+  color: #000000;
+}
+
+select:invalid,
+select option[value=""] {
+  color: #999999;
+}
+
 
 /* Timepicker */
 .flatpickr-calendar.hasTime .flatpickr-time {

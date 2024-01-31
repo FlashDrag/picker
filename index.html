@@ -27,7 +27,18 @@
         <button class="today-btn">Today</button>
       </div>
 
-      <div>
+      <div class="selectors-container">
+        <select name="nullflavor" id="nullflavorDropdown">
+          <option value="" selected>Select nullflavor</option>
+          <option value="NI">No Information (NI)</option>
+          <option value="MSK">Masked (MSK)</option>
+          <option value="UNK">Unknown (UNK)</option>
+          <option value="NA">Not Applicable (NA)</option>
+          <option value="ASKU">Asked But Unknown (ASKU)</option>
+          <option value="NASK">Not Asked (NASK)</option>
+          <option value="NINF">Negative Infinity (NINF)</option>
+          <option value="PINF">Positive Infinity (PINF)</option>
+        </select>
         <input type="text" id="flatpickrCalendar" placeholder="▼ Select Date">
       </div>
     </div>
