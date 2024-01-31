@@ -1,7 +1,5 @@
 // TimeZone Dropdown
 
-const m = moment();
-
 const timezone_names = moment.tz.names();
 
 // Detect user's timezone

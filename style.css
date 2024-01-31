@@ -20,19 +20,43 @@ body {
   display: inline-block;
 }
 
+/* Buttons */
+#clearApplyBtnContainer {
+  padding: 5px;
+}
 
-.today-btn {
-  display: inline;
-  background-color: #3e69cf;
-  color: #fff;
+.today-btn, #applyBtn, #clearBtn {
+  display: inline-block;
   padding-left: 10px;
   padding-right: 10px;
-  border-radius: 0;
   cursor: pointer;
 }
 
-.today-btn:hover {
-  background-color: #3b61b8;
+.today-btn, #applyBtn {
+  border: 2px solid #3563ce;
+}
+
+.today-btn, #applyBtn {
+  background-color: #3e69cf;
+  color: #fff;
+}
+
+.today-btn:hover, #applyBtn:hover {
+  background-color: #3563ce;
+}
+
+#clearBtn, #applyBtn {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+#clearBtn {
+  border: 2px solid #eae9e9;
+  margin-right: 10px;
+}
+
+#clearBtn:hover {
+  background-color: #eae9e9;
 }
 
 /* Selectors container */
@@ -45,35 +69,29 @@ body {
 #nullflavorDropdown {
   width: 100%;
   margin-bottom: 5px;
-}
-
-#nullflavorDropdown, #nullflavorDropdown option[value=""], .selected-option {
-  color: #999;
-}
-
-select,
-select option {
   color: #000000;
 }
 
-select:invalid,
-select option[value=""] {
-  color: #999999;
+#nullflavorDropdown option {
+  color: #000000;
 }
 
+#nullflavorDropdown, #nullflavorDropdown option[value=""], #nullflavorDropdown:invalid {
+  color: #999;
+}
 
 /* Timepicker */
-.flatpickr-calendar.hasTime .flatpickr-time {
+.flatpickr-calendar.hasTime .flatpickr-time,
+.flatpickr-innerContainer,
+.flatpickr-monthDropdown-months {
   opacity: 0.3;
   background-color: #f5f5f5b1;
-  transition: 0.2s;
 }
 
 /* Timezone selector */
 #timezoneSelector{
-  padding: 10px;
+  padding: 15px;
   cursor: pointer;
   border: none;
   opacity: 0.3;
-  transition: 0.2s;
 }
