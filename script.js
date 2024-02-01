@@ -43,7 +43,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     minuteSelector = document.querySelector(".flatpickr-minute-wrapper");
     secondSelector = document.querySelector(".flatpickr-second-wrapper");
 
-
     // Add "Month" and "Year" first option to the month and year dropdowns
     // const monthDropdown = document.querySelector(".flatpickr-monthDropdown-months");
     // const yearDropdown = document.querySelector(".flatpickr-monthDropdown-years");
@@ -145,7 +144,6 @@ monthPickerDropdown.addEventListener("click", function (e) {
   constructDatetimeString();
 });
 
-
 // listener for hourSelector,
 // reset opacity of hour picker and timezone when the user hover over it
 hourSelector.addEventListener("click", function (e) {
@@ -206,25 +204,12 @@ timezoneSelector.addEventListener("change", function () {
 // listener for clearBtn,
 // clear the flatpickrCalendar instance, openCalendar input and custom input fields
 clearBtn.addEventListener("click", function () {
-
   customInput.value = "";
   openCalendarInput.value = "";
-  fpCalendar.close();
+  // TODO
+  // fpCalendar.close();
 
-  // reset flatpickrCalendar
-  fpCalendar.setDate("today");
-
-  // set opacity of month picker, date picker, time picker and timezone picker to 0.3
-  monthPickerDropdown.style.opacity = 0.4;
-  datePickerContainer.style.opacity = 0.4;
-  hourSelector.style.opacity = 0.4;
-  minuteSelector.style.opacity = 0.4;
-  secondSelector.style.opacity = 0.4;
-  timezoneSelector.style.opacity = 0.4;
-
-  // reset dateParts and timeParts
-  Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
-  Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
+  resetflatpickrCalendar();
 });
 
 // listener for applyBtn,
@@ -244,16 +229,7 @@ todayButton.addEventListener("click", function () {
     currentDate.getMonth() + 1
   }-${currentDate.getDate()}`;
 
-  // reset flatpickrCalendar
-  monthPickerDropdown.style.opacity = 0.4;
-  datePickerContainer.style.opacity = 0.4;
-  hourSelector.style.opacity = 0.4;
-  minuteSelector.style.opacity = 0.4;
-  secondSelector.style.opacity = 0.4;
-  timezoneSelector.style.opacity = 0.4;
-
-  Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
-  Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
+  resetflatpickrCalendar();
 
   // reset nullflavorDropdown
   nullflavorDropdown.style.color = "#999";
@@ -313,6 +289,30 @@ function addClassesToTimeInputWrappers() {
       wrapper.classList.add("flatpickr-second-wrapper");
     }
   });
+}
+
+/**
+ * Reset the flatpickrCalendar instance to the current date and time
+ * Reset the opacity of month picker, date picker, time picker and timezone picker
+ * Remove active classes from selectors
+ * Reset dateParts and timeParts
+ */
+function resetflatpickrCalendar() {
+  fpCalendar.setDate("today");
+
+  monthPickerDropdown.style.opacity = 0.4;
+  datePickerContainer.style.opacity = 0.4;
+  hourSelector.style.opacity = 0.4;
+  minuteSelector.style.opacity = 0.4;
+  secondSelector.style.opacity = 0.4;
+  timezoneSelector.style.opacity = 0.4;
+
+  hourSelector.classList.remove("active");
+  minuteSelector.classList.remove("active");
+  secondSelector.classList.remove("active");
+
+  Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
+  Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
 }
 
 // ./ ---FUNCTIONS---
