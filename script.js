@@ -5,7 +5,8 @@ const dateParts = { year: "", month: "", day: "" };
 const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
 const customInput = document.getElementById("customInputField");
-const openCalendarInput = document.getElementById("openflatpickrCalendar");
+const selecteDateInput = document.querySelector(".selectedDateInput");
+const openCalendarBtn = document.querySelector(".openflatpickrCalendarBtn");
 
 let yearSelector;
 let monthPickerDropdown;
@@ -16,7 +17,8 @@ let secondSelector;
 
 const todayButton = document.querySelector(".today-btn");
 
-const nullflavorDropdown = document.getElementById("nullflavorDropdown");
+// TODO: add nullflavorDropdown
+// const nullflavorDropdown = document.getElementById("nullflavorDropdown");
 
 const fpCalendar = flatpickr("#flatpickrCalendar", {
   enableTime: true,
@@ -24,7 +26,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   defaultDate: "today",
   enableSeconds: true,
   time_24hr: true,
-  positionElement: openCalendarInput,
+  positionElement: customInput,
   onReady: function (selectedDates, dateStr, instance) {
     // Add timezone dropdown to the calendar
     instance.calendarContainer.appendChild(timezoneSelector);
@@ -44,9 +46,9 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   },
 
   onOpen: function (selectedDates, dateStr, instance) {
-    // reset nullflavorDropdown
-    nullflavorDropdown.value = "";
-    nullflavorDropdown.style.color = "#999";
+    // TODO: reset nullflavorDropdown
+    // nullflavorDropdown.value = "";
+    // nullflavorDropdown.style.color = "#999";
 
     // Capture the current year
     dateParts.year = instance.currentYear;
@@ -101,7 +103,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
 
 // listener for openCalendarInput,
 // when the user clicks on it, open the flatpickrCalendar instance
-openCalendarInput.addEventListener("click", function (e) {
+openCalendarBtn.addEventListener("click", function (e) {
   e.preventDefault();
   fpCalendar.open();
 });
@@ -218,7 +220,7 @@ clearBtn.addEventListener("click", function () {
 // listener for applyBtn,
 // Insert the selected datetime into the custom input field by clicking the apply button
 applyBtn.addEventListener("click", function () {
-  customInput.value = openCalendarInput.value;
+  customInput.value = selecteDateInput.value;
 
   // close flatpickrCalendar
   fpCalendar.close();
@@ -235,9 +237,9 @@ todayButton.addEventListener("click", function () {
   resetflatpickrCalendar();
   setCurrentDateForFlatpickrCalendar();
 
-  // reset nullflavorDropdown
-  nullflavorDropdown.style.color = "#999";
-  nullflavorDropdown.value = "";
+  // TODO reset nullflavorDropdown
+  // nullflavorDropdown.style.color = "#999";
+  // nullflavorDropdown.value = "";
 });
 
 // ./ ---LISTENERS---
@@ -273,7 +275,7 @@ function constructDatetimeString() {
     selectedDate += ` z${timeParts.timezone}`;
   }
 
-  openCalendarInput.value = selectedDate;
+  selecteDateInput.value = selectedDate;
 }
 
 /**
@@ -306,7 +308,7 @@ function addClassesToTimeInputWrappers() {
  */
 function resetflatpickrCalendar() {
   fpCalendar.setDate("today");
-  openCalendarInput.value = "";
+  selecteDateInput.value = fpCalendar.currentYear;
 
   monthPickerDropdown.style.opacity = 0.4;
   datePickerContainer.style.opacity = 0.4;

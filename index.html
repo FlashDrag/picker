@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -22,32 +23,24 @@
   <div class="container">
     <div class="form-container">
 
-      <div class="form-group">
-        <input id="customInputField" type="text" placeholder="Type Date">
+      <div id="testFieldContainer1" class="testFieldContainer">
+        <div class="form-group">
+          <label for="customInputField">Test Field 1</label>
+          <input id="customInputField" type="text" placeholder="Type Date" autocomplete="off">
+        </div>
         <button class="today-btn">Today</button>
-      </div>
-
-      <div class="selectors-container">
-        <select name="nullflavor" id="nullflavorDropdown">
-          <option value="" selected>Select nullflavor</option>
-          <option value="NI">No Information (NI)</option>
-          <option value="MSK">Masked (MSK)</option>
-          <option value="UNK">Unknown (UNK)</option>
-          <option value="NA">Not Applicable (NA)</option>
-          <option value="ASKU">Asked But Unknown (ASKU)</option>
-          <option value="NASK">Not Asked (NASK)</option>
-          <option value="NINF">Negative Infinity (NINF)</option>
-          <option value="PINF">Positive Infinity (PINF)</option>
-        </select>
-        <div id="flatpickrCalendarContainer">
-          <input autocomplete="off" id="openflatpickrCalendar" placeholder="▼ Select Date">
+        <div class="flatpickrCalendarContainer">
+          <button class="openflatpickrCalendarBtn">
+            <i class="fa-regular fa-calendar-days"></i>
+          </button>
           <input type="text" id="flatpickrCalendar" style="display: none;">
+          <input type="text" class="selectedDateInput" style="display: none;">
         </div>
       </div>
     </div>
+
   </div>
 
-  <script defer src="nullflavor.js"></script>
   <script defer type="module" src="script.js"></script>
   <script defer type="module" src="timeZone.js"></script>
   <script defer type="module" src="clearApplyBtn.js"></script>
