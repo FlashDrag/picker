@@ -81,10 +81,10 @@ body {
 }
 
 /* Timepicker */
-.flatpickr-calendar.hasTime .flatpickr-time,
+.flatpickr-hour-wrapper, .flatpickr-minute-wrapper, .flatpickr-second-wrapper,
 .flatpickr-innerContainer,
 .flatpickr-monthDropdown-months {
-  opacity: 0.3;
+  opacity: 0.4;
   background-color: #f5f5f5b1;
 }
 
@@ -93,5 +93,12 @@ body {
   padding: 15px;
   cursor: pointer;
   border: none;
-  opacity: 0.3;
+  opacity: 0.4;
+}
+
+#flatpickrCalendar {
+  /* display: none; */
+}
+#openflatpickrCalendar {
+  cursor: pointer;
 }
