@@ -63,11 +63,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     nullflavorDropdown.value = "";
     nullflavorDropdown.style.color = "#999";
 
-    // set current month as selected month
-    const currentMonth = instance.currentMonth + 1;
-    monthPickerDropdown.value = currentMonth;
-    console.log(monthPickerDropdown.value);
-
     // Capture the current year
     dateParts.year = instance.currentYear;
 
@@ -88,11 +83,15 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     dateParts.month = selectedDates[0].getMonth() + 1;
     dateParts.day = selectedDates[0].getDate();
 
-    console.log("onChange");
-
     // if hourSelector is active, capture the current hour
     if (hourSelector.classList.contains("active")) {
       timeParts.hour = selectedDates[0].getHours();
+    }
+    if (minuteSelector.classList.contains("active")) {
+      timeParts.minute = selectedDates[0].getMinutes();
+    }
+    if (secondSelector.classList.contains("active")) {
+      timeParts.second = selectedDates[0].getSeconds();
     }
 
     constructDatetimeString();
@@ -146,24 +145,10 @@ monthPickerDropdown.addEventListener("click", function (e) {
   constructDatetimeString();
 });
 
-// listener for datePickerContainer,
-// when the user clicks on it, the new date is captured
-// datePickers.forEach((datePicker) => {
-//   datePicker.addEventListener("click", function (e) {
-//     e.preventDefault();
-//     console.log("datePicker clicked");
-//     // Capture the current date
-//     const currentDate = fpCalendar.selectedDates[0].getDate();
-//     dateParts.day = currentDate;
-
-//     constructDatetimeString();
-//   });
-// });
 
 // listener for hourSelector,
 // reset opacity of hour picker and timezone when the user hover over it
 hourSelector.addEventListener("click", function (e) {
-  console.log("hourSelector clicked");
   monthPickerDropdown.style.opacity = 1;
   datePickerContainer.style.opacity = 1;
   hourSelector.style.opacity = 1;
@@ -171,8 +156,6 @@ hourSelector.addEventListener("click", function (e) {
 
   // add active class to hourSelector
   hourSelector.classList.add("active");
-
-  constructDatetimeString();
 });
 
 // listener for minuteSelector,
@@ -184,10 +167,10 @@ minuteSelector.addEventListener("click", function (e) {
   minuteSelector.style.opacity = 1;
   timezoneSelector.style.opacity = 1;
 
-  const currentHour = fpCalendar.currentHour;
-  const currentMinute = fpCalendar.currentMinute;
-  timeParts.hour = currentHour;
-  timeParts.minute = currentMinute;
+  // add active class to hourSelector
+  hourSelector.classList.add("active");
+  // add active class to minuteSelector
+  minuteSelector.classList.add("active");
 });
 
 // listener for secondSelector,
@@ -200,12 +183,12 @@ secondSelector.addEventListener("click", function (e) {
   secondSelector.style.opacity = 1;
   timezoneSelector.style.opacity = 1;
 
-  const currentHour = fpCalendar.currentHour;
-  const currentMinute = fpCalendar.currentMinute;
-  const currentSecond = fpCalendar.currentSecond;
-  timeParts.hour = currentHour;
-  timeParts.minute = currentMinute;
-  timeParts.second = currentSecond;
+  // add active class to hourSelector
+  hourSelector.classList.add("active");
+  // add active class to minuteSelector
+  minuteSelector.classList.add("active");
+  // add active class to secondSelector
+  secondSelector.classList.add("active");
 });
 
 // listener for month Selector,
@@ -221,13 +204,16 @@ timezoneSelector.addEventListener("change", function () {
 });
 
 // listener for clearBtn,
-// clear the flatpickrCalendar input and custom input field by clicking the clear button
-// set opacity of month picker, date picker, time picker and timezone picker to 0.3
-// reset dateParts and timeParts
+// clear the flatpickrCalendar instance, openCalendar input and custom input fields
 clearBtn.addEventListener("click", function () {
-  flatpickrCalendar.value = "";
-  customInput.value = "";
+  // reset flatpickrCalendar value to default value
+  fpCalendar.defaultDate = "today";
 
+  customInput.value = "";
+  openCalendarInput.value = "";
+  fpCalendar.close();
+
+  // set opacity of month picker, date picker, time picker and timezone picker to 0.3
   monthPickerDropdown.style.opacity = 0.4;
   datePickerContainer.style.opacity = 0.4;
   hourSelector.style.opacity = 0.4;
@@ -235,18 +221,15 @@ clearBtn.addEventListener("click", function () {
   secondSelector.style.opacity = 0.4;
   timezoneSelector.style.opacity = 0.4;
 
+  // reset dateParts and timeParts
   Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
   Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
-
-  constructDatetimeString();
 });
 
 // listener for applyBtn,
 // Insert the selected datetime into the custom input field by clicking the apply button
 applyBtn.addEventListener("click", function () {
-  // update custom input field
-  updateCustomInputWithDate();
-  updateCustomInputWithTime();
+  customInput.value = openCalendarInput.value;
 
   // close flatpickrCalendar
   fpCalendar.close();
@@ -287,68 +270,28 @@ todayButton.addEventListener("click", function () {
  * Updates the flatpickrCalendar input with the selected date string.
  */
 function constructDatetimeString() {
-  let dateFormat = "";
   let selectedDate = "";
 
   if (dateParts.year) {
-    dateFormat += "Y";
     selectedDate += dateParts.year;
   }
   if (dateParts.month) {
-    dateFormat += "-m";
     selectedDate += `-${dateParts.month}`;
   }
   if (dateParts.day) {
-    dateFormat += "-d";
     selectedDate += `-${dateParts.day}`;
   }
   if (timeParts.hour !== "") {
-    dateFormat += " H";
     selectedDate += ` ${timeParts.hour}`;
   }
   if (timeParts.minute !== "") {
-    dateFormat += ":i";
     selectedDate += `:${timeParts.minute}`;
   }
   if (timeParts.second !== "") {
-    dateFormat += ":S";
     selectedDate += `:${timeParts.second}`;
   }
 
-  // update dateFormat for flatpickrCalendar instance
-  fpCalendar.config.dateFormat = dateFormat;
-  // update flatpickrCalendar input
-  fpCalendar.setDate(selectedDate);
-  console.log("constructDatetimeString");
-}
-
-function updateCustomInputWithDate() {
-  customInput.value = Object.values(dateParts).filter(Boolean).join("-");
-}
-
-/**
- * Constructs and appends a time string to `customInput` based on `timeParts` values.
- * Formats time as HH:MM:SS, defaulting unset components to '00'. Ensures that if a later time component
- * is set (e.g., minutes), all preceding components (e.g., hours) are included, defaulting to '00' if necessary.
- * Updates `customInput` only if at least one time component is set.
- */
-function updateCustomInputWithTime() {
-  let timeString = "";
-  if (timeParts.hour || timeParts.minute || timeParts.second) {
-    timeString += timeParts.hour || "00";
-  }
-  if (timeParts.minute || timeParts.second) {
-    timeString += ":" + (timeParts.minute || "00");
-  }
-  if (timeParts.second) {
-    timeString += ":" + timeParts.second;
-  }
-
-  // Add time string with timezone to the input value if any time component is present
-  if (timeString) {
-    timeParts.timezone = timezoneSelector.value;
-    customInput.value += " " + timeString + " " + "z" + timezoneSelector.value;
-  }
+  openCalendarInput.value = selectedDate;
 }
 
 /**
