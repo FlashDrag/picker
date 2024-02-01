@@ -10,7 +10,6 @@ const openCalendarInput = document.getElementById("openflatpickrCalendar");
 let yearSelector;
 let monthPickerDropdown;
 let datePickerContainer;
-let datePickers;
 let hourSelector;
 let minuteSelector;
 let secondSelector;
@@ -26,6 +25,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
   defaultDate: "today",
   enableSeconds: true,
   time_24hr: true,
+  positionElement: openCalendarInput,
   onReady: function (selectedDates, dateStr, instance) {
     // Add timezone dropdown to the calendar
     instance.calendarContainer.appendChild(timezoneSelector);
@@ -37,7 +37,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
       ".flatpickr-monthDropdown-months"
     );
     datePickerContainer = document.querySelector(".flatpickr-innerContainer");
-    datePickers = document.querySelectorAll(".flatpickr-day");
 
     addClassesToTimeInputWrappers();
     hourSelector = document.querySelector(".flatpickr-hour-wrapper");
@@ -122,6 +121,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
 // listener for openCalendarInput,
 // when the user clicks on it, open the flatpickrCalendar instance
 openCalendarInput.addEventListener("click", function (e) {
+  e.preventDefault();
   fpCalendar.open();
 });
 
@@ -206,12 +206,13 @@ timezoneSelector.addEventListener("change", function () {
 // listener for clearBtn,
 // clear the flatpickrCalendar instance, openCalendar input and custom input fields
 clearBtn.addEventListener("click", function () {
-  // reset flatpickrCalendar value to default value
-  fpCalendar.defaultDate = "today";
 
   customInput.value = "";
   openCalendarInput.value = "";
   fpCalendar.close();
+
+  // reset flatpickrCalendar
+  fpCalendar.setDate("today");
 
   // set opacity of month picker, date picker, time picker and timezone picker to 0.3
   monthPickerDropdown.style.opacity = 0.4;
@@ -253,8 +254,6 @@ todayButton.addEventListener("click", function () {
 
   Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
   Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
-
-  constructDatetimeString();
 
   // reset nullflavorDropdown
   nullflavorDropdown.style.color = "#999";
