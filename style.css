@@ -1,3 +1,8 @@
+:root {
+  --flatpickr-calendar-button-bg: #569ff7;
+  --flatpickr-calendar-button-border: #7297f0;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #fafafa;
@@ -34,14 +39,14 @@ body {
 }
 .openflatpickrCalendarBtn {
   cursor: pointer;
-  background-color: #3e69cf;
+  background-color: var(--flatpickr-calendar-button-bg);
   color: #fff;
-  border: 2px solid #3563ce;
+  border: 2px solid var(--flatpickr-calendar-button-border);
   border-radius: 3px;
 }
 
 .openflatpickrCalendarBtn:hover {
-  background-color: #3563ce;
+  background-color: var(--flatpickr-calendar-button-border);
 }
 
 .today-btn, #applyBtn, #clearBtn {
@@ -53,16 +58,16 @@ body {
 }
 
 .today-btn, #applyBtn {
-  border: 2px solid #3563ce;
+  border: 2px solid var(--flatpickr-calendar-button-border);
 }
 
 .today-btn, #applyBtn {
-  background-color: #3e69cf;
+  background-color: var(--flatpickr-calendar-button-bg);
   color: #fff;
 }
 
 .today-btn:hover, #applyBtn:hover {
-  background-color: #3563ce;
+  background-color: var(--flatpickr-calendar-button-border);
 }
 
 #clearBtn, #applyBtn {
