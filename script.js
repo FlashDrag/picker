@@ -21,7 +21,6 @@ const nullflavorDropdown = document.getElementById("nullflavorDropdown");
 const fpCalendar = flatpickr("#flatpickrCalendar", {
   enableTime: true,
   dateFormat: "Y-m-d H:i:S",
-  defaultHour: 0,
   defaultDate: "today",
   enableSeconds: true,
   time_24hr: true,
@@ -42,18 +41,6 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     hourSelector = document.querySelector(".flatpickr-hour-wrapper");
     minuteSelector = document.querySelector(".flatpickr-minute-wrapper");
     secondSelector = document.querySelector(".flatpickr-second-wrapper");
-
-    // Add "Month" and "Year" first option to the month and year dropdowns
-    // const monthDropdown = document.querySelector(".flatpickr-monthDropdown-months");
-    // const yearDropdown = document.querySelector(".flatpickr-monthDropdown-years");
-    // const monthOption = document.createElement("option");
-    // const yearOption = document.createElement("option");
-    // monthOption.value = "";
-    // monthOption.innerHTML = "Month";
-    // yearOption.value = "";
-    // yearOption.innerHTML = "Year";
-    // monthDropdown.insertBefore(monthOption, monthDropdown.firstChild);
-    // yearDropdown.insertBefore(yearOption, yearDropdown.firstChild);
   },
 
   onOpen: function (selectedDates, dateStr, instance) {
@@ -206,8 +193,6 @@ timezoneSelector.addEventListener("change", function () {
 clearBtn.addEventListener("click", function () {
   customInput.value = "";
   openCalendarInput.value = "";
-  // TODO
-  // fpCalendar.close();
 
   resetflatpickrCalendar();
 });
@@ -299,6 +284,7 @@ function addClassesToTimeInputWrappers() {
  */
 function resetflatpickrCalendar() {
   fpCalendar.setDate("today");
+  openCalendarInput.value = "";
 
   monthPickerDropdown.style.opacity = 0.4;
   datePickerContainer.style.opacity = 0.4;
