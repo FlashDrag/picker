@@ -4,7 +4,7 @@ import { clearApplyBtnContainer, clearBtn, applyBtn } from "./clearApplyBtn.js";
 const dateParts = { year: "", month: "", day: "" };
 const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
-const customInput = document.getElementById("customInputField");
+const customInput = document.querySelector(".dateTimeInputField");
 const selecteDateInput = document.querySelector(".selectedDateInput");
 const openCalendarBtn = document.querySelector(".openflatpickrCalendarBtn");
 
