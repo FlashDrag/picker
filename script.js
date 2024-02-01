@@ -84,13 +84,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
 
   // Triggered when the month is changed, either by the user or programmatically
   onMonthChange: function (selectedDates, dateStr, instance) {
-    // reset opacity of month picker
-    monthPickerDropdown.style.opacity = 1;
-
-    // Capture the current month
-    dateParts.month = instance.currentMonth + 1;
-
-    constructDatetimeString();
+    // reserved for future use
   },
 
   // Triggered when the year is changed, either by the user or programmatically
@@ -125,8 +119,8 @@ yearSelector.addEventListener("click", function (e) {
 // when the user clicks on it, the new month is captured
 monthPickerDropdown.addEventListener("click", function (e) {
   // Capture the current month
-  const currentMonth = fpCalendar.currentMonth + 1;
-  dateParts.month = currentMonth;
+  dateParts.year = fpCalendar.currentYear;
+  dateParts.month = fpCalendar.currentMonth + 1;
 
   constructDatetimeString();
 });
@@ -180,6 +174,11 @@ secondSelector.addEventListener("click", function (e) {
 // reset opacity of month picker when user clicks on it
 monthPickerDropdown.addEventListener("click", function (e) {
   monthPickerDropdown.style.opacity = 1;
+
+  // Capture the current year
+  dateParts.year = fpCalendar.currentYear;
+
+  constructDatetimeString();
 });
 
 // listener for timezoneSelector,
@@ -192,7 +191,6 @@ timezoneSelector.addEventListener("change", function () {
 // clear the flatpickrCalendar instance, openCalendar input and custom input fields
 clearBtn.addEventListener("click", function () {
   customInput.value = "";
-  openCalendarInput.value = "";
 
   resetflatpickrCalendar();
 });
@@ -230,6 +228,7 @@ todayButton.addEventListener("click", function () {
  * Updates the flatpickrCalendar input with the selected date string.
  */
 function constructDatetimeString() {
+  console.log("Constructing datetime string...");
   let selectedDate = "";
 
   if (dateParts.year) {
