@@ -71,6 +71,7 @@ const fpCalendar = flatpickr("#flatpickrCalendar", {
     // if hourSelector is active, capture the current hour
     if (hourSelector.classList.contains("active")) {
       timeParts.hour = selectedDates[0].getHours();
+      timeParts.timezone = timezoneSelector.value;
     }
     if (minuteSelector.classList.contains("active")) {
       timeParts.minute = selectedDates[0].getMinutes();
@@ -248,6 +249,9 @@ function constructDatetimeString() {
   }
   if (timeParts.second !== "") {
     selectedDate += `:${timeParts.second}`;
+  }
+  if (timeParts.timezone !== "") {
+    selectedDate += ` z${timeParts.timezone}`;
   }
 
   openCalendarInput.value = selectedDate;
