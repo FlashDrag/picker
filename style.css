@@ -96,9 +96,6 @@ body {
   opacity: 0.4;
 }
 
-#flatpickrCalendar {
-  /* display: none; */
-}
 #openflatpickrCalendar {
   cursor: pointer;
 }

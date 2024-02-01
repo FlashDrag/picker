@@ -204,6 +204,7 @@ secondSelector.addEventListener("click", function (e) {
 // update custom input field with the selected timezone
 timezoneSelector.addEventListener("change", function () {
   timeParts.timezone = timezoneSelector.value;
+  constructDatetimeString();
 });
 
 // listener for clearBtn,
