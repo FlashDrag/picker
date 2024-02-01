@@ -119,6 +119,8 @@ yearSelector.addEventListener("click", function (e) {
 // listener for monthDropdown,
 // when the user clicks on it, the new month is captured
 monthPickerDropdown.addEventListener("click", function (e) {
+  monthPickerDropdown.style.opacity = 1;
+
   // Capture the current month
   dateParts.year = fpCalendar.currentYear;
   dateParts.month = fpCalendar.currentMonth + 1;
@@ -136,6 +138,14 @@ hourSelector.addEventListener("click", function (e) {
 
   // add active class to hourSelector
   hourSelector.classList.add("active");
+
+  dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+  dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+  dateParts.day = fpCalendar.selectedDates[0].getDate();
+  timeParts.hour = fpCalendar.selectedDates[0].getHours();
+  timeParts.timezone = timezoneSelector.value;
+
+  constructDatetimeString();
 });
 
 // listener for minuteSelector,
@@ -151,6 +161,15 @@ minuteSelector.addEventListener("click", function (e) {
   hourSelector.classList.add("active");
   // add active class to minuteSelector
   minuteSelector.classList.add("active");
+
+  dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+  dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+  dateParts.day = fpCalendar.selectedDates[0].getDate();
+  timeParts.hour = fpCalendar.selectedDates[0].getHours();
+  timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
+  timeParts.timezone = timezoneSelector.value;
+
+  constructDatetimeString();
 });
 
 // listener for secondSelector,
@@ -169,15 +188,14 @@ secondSelector.addEventListener("click", function (e) {
   minuteSelector.classList.add("active");
   // add active class to secondSelector
   secondSelector.classList.add("active");
-});
 
-// listener for month Selector,
-// reset opacity of month picker when user clicks on it
-monthPickerDropdown.addEventListener("click", function (e) {
-  monthPickerDropdown.style.opacity = 1;
-
-  // Capture the current year
-  dateParts.year = fpCalendar.currentYear;
+  dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+  dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+  dateParts.day = fpCalendar.selectedDates[0].getDate();
+  timeParts.hour = fpCalendar.selectedDates[0].getHours();
+  timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
+  timeParts.second = fpCalendar.selectedDates[0].getSeconds();
+  timeParts.timezone = timezoneSelector.value;
 
   constructDatetimeString();
 });
@@ -229,7 +247,6 @@ todayButton.addEventListener("click", function () {
  * Updates the flatpickrCalendar input with the selected date string.
  */
 function constructDatetimeString() {
-  console.log("Constructing datetime string...");
   let selectedDate = "";
 
   if (dateParts.year) {
@@ -299,6 +316,9 @@ function resetflatpickrCalendar() {
   hourSelector.classList.remove("active");
   minuteSelector.classList.remove("active");
   secondSelector.classList.remove("active");
+
+  // reset timezoneSelector
+  timezoneSelector.value = "+00:00";
 
   Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
   Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
