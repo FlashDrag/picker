@@ -233,6 +233,7 @@ todayButton.addEventListener("click", function () {
   }-${currentDate.getDate()}`;
 
   resetflatpickrCalendar();
+  setCurrentDateForFlatpickrCalendar();
 
   // reset nullflavorDropdown
   nullflavorDropdown.style.color = "#999";
@@ -323,6 +324,22 @@ function resetflatpickrCalendar() {
 
   Object.keys(dateParts).forEach((key) => (dateParts[key] = ""));
   Object.keys(timeParts).forEach((key) => (timeParts[key] = ""));
+}
+
+/**
+ * Set the current date and time to the flatpickrCalendar instance
+ * Set the current date to the openCalendarInput
+ * Reset the opacity of month picker and date picker
+ */
+function setCurrentDateForFlatpickrCalendar() {
+  dateParts.year = fpCalendar.currentYear;
+  dateParts.month = fpCalendar.currentMonth + 1;
+  dateParts.day = fpCalendar.selectedDates[0].getDate();
+
+  monthPickerDropdown.style.opacity = 1;
+  datePickerContainer.style.opacity = 1;
+
+  constructDatetimeString();
 }
 
 // ./ ---FUNCTIONS---
