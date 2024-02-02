@@ -30,7 +30,7 @@ body {
 }
 
 /* Buttons */
-#clearApplyBtnContainer {
+.clearApplyBtnContainer {
   padding: 5px;
 }
 
@@ -49,7 +49,7 @@ body {
   background-color: var(--flatpickr-calendar-button-border);
 }
 
-.today-btn, #applyBtn, #clearBtn {
+.today-btn, .applyBtn, .clearBtn {
   display: inline-block;
   padding-left: 10px;
   padding-right: 10px;
@@ -57,30 +57,30 @@ body {
   border-radius: 3px;
 }
 
-.today-btn, #applyBtn {
+.today-btn, .applyBtn {
   border: 2px solid var(--flatpickr-calendar-button-border);
 }
 
-.today-btn, #applyBtn {
+.today-btn, .applyBtn {
   background-color: var(--flatpickr-calendar-button-bg);
   color: #fff;
 }
 
-.today-btn:hover, #applyBtn:hover {
+.today-btn:hover, .applyBtn:hover {
   background-color: var(--flatpickr-calendar-button-border);
 }
 
-#clearBtn, #applyBtn {
+.clearBtn, .applyBtn {
   font-size: 16px;
   font-weight: 500;
 }
 
-#clearBtn {
+.clearBtn {
   border: 2px solid #eae9e9;
   margin-right: 10px;
 }
 
-#clearBtn:hover {
+.clearBtn:hover {
   background-color: #eae9e9;
 }
 
@@ -114,7 +114,7 @@ body {
 }
 
 /* Timezone selector */
-#timezoneSelector{
+.timezoneSelector{
   padding: 15px;
   cursor: pointer;
   border: none;
