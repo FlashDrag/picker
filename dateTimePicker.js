@@ -12,7 +12,7 @@ export default function initDateTimePicker(containerSelector) {
   const selecteDateInput = container.querySelector(".selectedDateInput");
   const openCalendarBtn = container.querySelector(".openflatpickrCalendarBtn");
 
-  let yearSelector;
+  // let yearSelector;
   let monthPickerDropdown;
   let datePickerContainer;
   let hourSelector;
@@ -76,9 +76,9 @@ export default function initDateTimePicker(containerSelector) {
       instance.calendarContainer.appendChild(clearApplyBtnContainer);
       // ./ Add clear and apply buttons to the calendar
 
-      yearSelector = container.querySelector(
-        ".flatpickr-month .numInputWrapper"
-      );
+      // yearSelector = container.querySelector(
+      //   ".flatpickr-month .numInputWrapper"
+      // );
       monthPickerDropdown = container.querySelector(
         ".flatpickr-monthDropdown-months"
       );
@@ -97,10 +97,17 @@ export default function initDateTimePicker(containerSelector) {
       // nullflavorDropdown.value = "";
       // nullflavorDropdown.style.color = "#999";
 
-      // Capture the current year
-      dateParts.year = instance.currentYear;
+      // if custom input has a value,
+      // set the flatpickrCalendar instance to the custom input value
+      const customInputValue = parseDateFromCustomInput(customInput.value);
 
-      constructDatetimeString();
+      if (customInputValue !== "invalid") {
+        instance.setDate(customInputValue);
+      } else {
+        // Capture the current year
+        dateParts.year = instance.currentYear;
+        constructDatetimeString();
+      }
     },
 
     onClose: function (selectedDates, dateStr, instance) {
@@ -109,6 +116,7 @@ export default function initDateTimePicker(containerSelector) {
 
     // Triggered when the user selects a date, or changes the time on a selected date
     onChange: function (selectedDates, dateStr, instance) {
+      console.log("onChange triggered");
       monthPickerDropdown.style.opacity = 1;
       datePickerContainer.style.opacity = 1;
 
@@ -164,6 +172,10 @@ export default function initDateTimePicker(containerSelector) {
     fpCalendar.toggle();
   });
 
+  customInput.addEventListener("change", function (e) {
+    parseDateFromCustomInput(e.target.value);
+  });
+
   // listener for yearSelector,
   // when the user clicks on it, the new year is captured
   // TODO: remove yearSelector
@@ -179,13 +191,7 @@ export default function initDateTimePicker(containerSelector) {
   // when the user first time clicks on it, month is captured
   monthPickerDropdown.addEventListener("click", function (e) {
     if (!monthPickerDropdown.classList.contains("active")) {
-      monthPickerDropdown.style.opacity = 1;
-      monthPickerDropdown.classList.add("active");
-
-      // Capture the current month
-      dateParts.year = fpCalendar.currentYear;
-      dateParts.month = fpCalendar.currentMonth + 1;
-
+      activateMonthSelector();
       constructDatetimeString();
     }
   });
@@ -194,20 +200,7 @@ export default function initDateTimePicker(containerSelector) {
   // reset opacity of hour picker and timezone when the user first time clicks on it
   hourSelector.addEventListener("click", function (e) {
     if (!hourSelector.classList.contains("active")) {
-      monthPickerDropdown.style.opacity = 1;
-      datePickerContainer.style.opacity = 1;
-      hourSelector.style.opacity = 1;
-      timezoneSelector.style.opacity = 1;
-
-      // add active class to hourSelector
-      hourSelector.classList.add("active");
-
-      dateParts.year = fpCalendar.selectedDates[0].getFullYear();
-      dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
-      dateParts.day = fpCalendar.selectedDates[0].getDate();
-      timeParts.hour = fpCalendar.selectedDates[0].getHours();
-      timeParts.timezone = timezoneSelector.value;
-
+      activateHourSelector();
       constructDatetimeString();
     }
   });
@@ -216,24 +209,7 @@ export default function initDateTimePicker(containerSelector) {
   // reset opacity of minute picker and timezone when the user first time clicks on it
   minuteSelector.addEventListener("click", function (e) {
     if (!minuteSelector.classList.contains("active")) {
-      monthPickerDropdown.style.opacity = 1;
-      datePickerContainer.style.opacity = 1;
-      hourSelector.style.opacity = 1;
-      minuteSelector.style.opacity = 1;
-      timezoneSelector.style.opacity = 1;
-
-      // add active class to hourSelector
-      hourSelector.classList.add("active");
-      // add active class to minuteSelector
-      minuteSelector.classList.add("active");
-
-      dateParts.year = fpCalendar.selectedDates[0].getFullYear();
-      dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
-      dateParts.day = fpCalendar.selectedDates[0].getDate();
-      timeParts.hour = fpCalendar.selectedDates[0].getHours();
-      timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
-      timeParts.timezone = timezoneSelector.value;
-
+      activateMinuteSelector();
       constructDatetimeString();
     }
   });
@@ -242,28 +218,7 @@ export default function initDateTimePicker(containerSelector) {
   // reset opacity of second
   secondSelector.addEventListener("click", function (e) {
     if (!secondSelector.classList.contains("active")) {
-      monthPickerDropdown.style.opacity = 1;
-      datePickerContainer.style.opacity = 1;
-      hourSelector.style.opacity = 1;
-      minuteSelector.style.opacity = 1;
-      secondSelector.style.opacity = 1;
-      timezoneSelector.style.opacity = 1;
-
-      // add active class to hourSelector
-      hourSelector.classList.add("active");
-      // add active class to minuteSelector
-      minuteSelector.classList.add("active");
-      // add active class to secondSelector
-      secondSelector.classList.add("active");
-
-      dateParts.year = fpCalendar.selectedDates[0].getFullYear();
-      dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
-      dateParts.day = fpCalendar.selectedDates[0].getDate();
-      timeParts.hour = fpCalendar.selectedDates[0].getHours();
-      timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
-      timeParts.second = fpCalendar.selectedDates[0].getSeconds();
-      timeParts.timezone = timezoneSelector.value;
-
+      activateSecondSelector();
       constructDatetimeString();
     }
   });
@@ -287,7 +242,8 @@ export default function initDateTimePicker(containerSelector) {
   // Insert the selected datetime into the custom input field by clicking the apply button
   applyBtn.addEventListener("click", function () {
     customInput.value = selecteDateInput.value;
-
+    customInput.style.border = "1px solid #ccc";
+    
     // close flatpickrCalendar
     fpCalendar.close();
   });
@@ -295,13 +251,12 @@ export default function initDateTimePicker(containerSelector) {
   // listener for todayButton,
   // set the current date and time to the custom input field by clicking the today button
   todayButton.addEventListener("click", function () {
-    const currentDate = new Date();
-    customInput.value = `${currentDate.getFullYear()}-${
-      currentDate.getMonth() + 1
-    }-${currentDate.getDate()}`;
+    // detect the user's timezone and set today's date based on it
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const currentDate = moment.tz(userTimezone).toDate();
+    customInput.value = moment(currentDate).format("YYYY-MM-DD");
 
     resetflatpickrCalendar();
-    setCurrentDateForFlatpickrCalendar();
 
     // TODO reset nullflavorDropdown
     // nullflavorDropdown.style.color = "#999";
@@ -318,30 +273,38 @@ export default function initDateTimePicker(containerSelector) {
    */
   function constructDatetimeString() {
     let selectedDate = "";
+    let dateFormat = "";
 
     if (dateParts.year) {
       selectedDate += dateParts.year;
+      dateFormat += "YYYY";
     }
     if (dateParts.month) {
       selectedDate += `-${dateParts.month}`;
+      dateFormat += "-MM";
     }
     if (dateParts.day) {
       selectedDate += `-${dateParts.day}`;
+      dateFormat += "-DD";
     }
     if (timeParts.hour !== "") {
       selectedDate += ` ${timeParts.hour}`;
+      dateFormat += " HH";
     }
     if (timeParts.minute !== "") {
       selectedDate += `:${timeParts.minute}`;
+      dateFormat += ":mm";
     }
     if (timeParts.second !== "") {
       selectedDate += `:${timeParts.second}`;
+      dateFormat += ":ss";
     }
     if (timeParts.timezone !== "") {
       selectedDate += ` z${timeParts.timezone}`;
+      dateFormat += " Z";
     }
 
-    selecteDateInput.value = selectedDate;
+    selecteDateInput.value = moment(selectedDate, dateFormat).format(dateFormat);
   }
 
   /**
@@ -364,6 +327,127 @@ export default function initDateTimePicker(containerSelector) {
         wrapper.classList.add("flatpickr-second-wrapper");
       }
     });
+  }
+
+  /**
+   * Activate the month picker
+   * Set the opacity to 1 and add active class
+   */
+  function activateMonthSelector() {
+    monthPickerDropdown.style.opacity = 1;
+    monthPickerDropdown.classList.add("active");
+
+    // Capture the current month
+    dateParts.year = fpCalendar.currentYear;
+    dateParts.month = fpCalendar.currentMonth + 1;
+  }
+
+  /**
+   * Activate the month, date, hour and timezone pickers
+   * Set the opacity to 1
+   * Add active classes
+   * Capture the current date parts and time parts
+   * Set the dateParts and timeParts
+   */
+  function activateHourSelector() {
+    monthPickerDropdown.style.opacity = 1;
+    datePickerContainer.style.opacity = 1;
+    hourSelector.style.opacity = 1;
+    timezoneSelector.style.opacity = 1;
+
+    // add active class to hourSelector
+    hourSelector.classList.add("active");
+
+    dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+    dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+    dateParts.day = fpCalendar.selectedDates[0].getDate();
+    timeParts.hour = fpCalendar.selectedDates[0].getHours();
+    timeParts.timezone = timezoneSelector.value;
+  }
+
+  /**
+   * Activate the month, date, hour, minute and timezone pickers
+   * Set the opacity to 1
+   * Add active classes
+   * Capture the current date parts and time parts
+   * Set the dateParts and timeParts
+   */
+  function activateMinuteSelector() {
+    monthPickerDropdown.style.opacity = 1;
+    datePickerContainer.style.opacity = 1;
+    hourSelector.style.opacity = 1;
+    minuteSelector.style.opacity = 1;
+    timezoneSelector.style.opacity = 1;
+
+    // add active class to hourSelector
+    hourSelector.classList.add("active");
+    // add active class to minuteSelector
+    minuteSelector.classList.add("active");
+
+    dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+    dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+    dateParts.day = fpCalendar.selectedDates[0].getDate();
+    timeParts.hour = fpCalendar.selectedDates[0].getHours();
+    timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
+    timeParts.timezone = timezoneSelector.value;
+  }
+
+  /**
+   * Activate the month, date, hour, minute, second and timezone pickers
+   * Set the opacity to 1
+   * Add active classes
+   * Capture the current date parts and time parts
+   * Set the dateParts and timeParts
+   */
+  function activateSecondSelector() {
+    monthPickerDropdown.style.opacity = 1;
+    datePickerContainer.style.opacity = 1;
+    hourSelector.style.opacity = 1;
+    minuteSelector.style.opacity = 1;
+    secondSelector.style.opacity = 1;
+    timezoneSelector.style.opacity = 1;
+
+    // add active class to hourSelector
+    hourSelector.classList.add("active");
+    // add active class to minuteSelector
+    minuteSelector.classList.add("active");
+    // add active class to secondSelector
+    secondSelector.classList.add("active");
+
+    dateParts.year = fpCalendar.selectedDates[0].getFullYear();
+    dateParts.month = fpCalendar.selectedDates[0].getMonth() + 1;
+    dateParts.day = fpCalendar.selectedDates[0].getDate();
+    timeParts.hour = fpCalendar.selectedDates[0].getHours();
+    timeParts.minute = fpCalendar.selectedDates[0].getMinutes();
+    timeParts.second = fpCalendar.selectedDates[0].getSeconds();
+    timeParts.timezone = timezoneSelector.value;
+  }
+
+  /**
+   * Activate the selector based on the selector identifier
+   * @param {string} selector - The granular part of the date and time. E.g. month, hour, minute, second
+   */
+  function activateSelector(selector) {
+    switch (selector) {
+      case "month":
+        activateMonthSelector();
+        break;
+      case "day":
+        monthPickerDropdown.style.opacity = 1;
+        datePickerContainer.style.opacity = 1;
+        break;
+      case "hour":
+        activateHourSelector();
+        break;
+      case "minute":
+        activateMinuteSelector();
+        break;
+      case "second":
+        activateSecondSelector();
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -396,20 +480,41 @@ export default function initDateTimePicker(containerSelector) {
   }
 
   /**
-   * Set the current date and time to the flatpickrCalendar instance
-   * Set the current date to the openCalendarInput
-   * Reset the opacity of month picker and date picker
+   * Parse and validate the date from the custom input field
+   * @param {string} dateStr - The date string from the custom input field
+   * @returns {Date} - The parsed date
    */
-  function setCurrentDateForFlatpickrCalendar() {
-    dateParts.year = fpCalendar.currentYear;
-    dateParts.month = fpCalendar.currentMonth + 1;
-    dateParts.day = fpCalendar.selectedDates[0].getDate();
+  function parseDateFromCustomInput(dateStr) {
+    if (dateStr === "") {
+      return "invalid";
+    }
+    const formats = [
+      { format: "YYYY-MM-DD HH:mm:ss", granularity: "second" },
+      { format: "YYYY-MM-DD HH:mm", granularity: "minute" },
+      { format: "YYYY-MM-DD HH", granularity: "hour" },
+      { format: "YYYY-MM-DD", granularity: "day" },
+      { format: "YYYY-MM", granularity: "month" },
+      { format: "YYYY", granularity: "year" },
+    ];
 
-    monthPickerDropdown.style.opacity = 1;
-    datePickerContainer.style.opacity = 1;
+    for (let { format, granularity } of formats) {
+      // true for strict parsing
+      const parsedDate = moment(dateStr, format, true);
+      if (parsedDate.isValid()) {
+        selecteDateInput.value = parsedDate.format(format);
+        console.log("Selected Date: ", selecteDateInput.value);
+        console.log(parsedDate.format());
+        console.log(granularity);
+        activateSelector(granularity);
+        customInput.style.border = "1px solid #ccc";
+        return parsedDate.toDate();
+      }
+    }
 
-    constructDatetimeString();
+    console.error("Invalid date format");
+    // make the custom input field red
+    customInput.style.border = "1px solid red";
+    return "invalid";
   }
-
   // ./ ---FUNCTIONS---
 }
