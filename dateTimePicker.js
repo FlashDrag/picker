@@ -104,10 +104,13 @@ export default function initDateTimePicker(containerSelector) {
       const parsedDateObj = parseDateFromCustomInput(customInput.value);
 
       if (parsedDateObj) {
-        console.log("isTimezoneIncluded: ", parsedDateObj.isTimezoneIncluded);
-        console.log("parsedDate: ", parsedDateObj.parsedDate);
         activateSelector(parsedDateObj.granularity);
         instance.setDate(parsedDateObj.parsedDate);
+
+        // set selected timezone in the timezoneSelector based on the user's input
+        if (parsedDateObj.timezoneOffset) {
+          timezoneSelector.value = parsedDateObj.timezoneOffset;
+        }
       } else {
         // Capture the current year
         dateParts.year = instance.currentYear;
@@ -498,12 +501,12 @@ export default function initDateTimePicker(containerSelector) {
   }
 
   /**
-   * Parse and validate the date from the custom input field
-   * @param {string} dateStr - The date string from the custom input field
+   * Parse and validate the datetime from the custom input field
+   * @param {string} dateStr - The datetime string from the custom input field
    * @returns {object} - The parsed date, timezone, and granularity
    */
   function parseDateFromCustomInput(dateStr) {
-    let timezone = "";
+    let timezoneOffset = null;
 
     if (dateStr === "") {
       customInput.style.border = "1px solid #767676";
@@ -524,21 +527,35 @@ export default function initDateTimePicker(containerSelector) {
 
     for (let { format, granularity } of formats) {
       // true for strict parsing
-      const parsedDate = moment(dateStr, format, true);
-      if (parsedDate.isValid()) {
-        if (format.includes("[z]Z")) {
-          // get timezone from the date string
-          console.log("timezone: ", "");
-          timezone = ""
+      const parsedDateMoment = moment(dateStr, format, true);
+      let parsedDate = null;
 
+      if (parsedDateMoment.isValid()) {
+        if (format.includes("[z]Z")) {
+          // get timezoneOffset from the date string
+          // e.g. "2024-02-03 02:00:00 z+03:00" => "+03:00"
+          // "(?<=z)" is a positive lookbehind assertion
+          const timezoneMatch = dateStr.match(/(?<=z)[+-]\d{2}:\d{2}$/);
+          timezoneOffset = timezoneMatch ? timezoneMatch[0] : null;
+
+          // remove the timezone from the format
           format = format.replace(" [z]Z", "");
+
+          // set the time back to the original timezone, so that the time doesn't change
+          // since the time was changed with the timezone offset provided by the user
+          const dateWithOriginalTimezone = parsedDateMoment.utcOffset(timezoneOffset, false).format(format);
+
+          selecteDateInput.value = dateWithOriginalTimezone;
+          parsedDate = dateWithOriginalTimezone;
+        } else {
+          selecteDateInput.value = parsedDateMoment.format(format);
+          parsedDate = parsedDateMoment.toDate();
         }
-        // FIXME
-        selecteDateInput.value = parsedDate.format(format);
 
         customInput.style.border = "1px solid #767676";
         dateFormatError.style.display = "none";
-        return { parsedDate: parsedDate.toDate(), timezone, granularity };
+
+        return { parsedDate, timezoneOffset, granularity };
       }
     }
 
