@@ -25,15 +25,22 @@
       <div class="dateTimeFieldContainer" id="dateOfCreationContainer">
         <div class="form-group">
           <label for="dateOfCreation">Date of creation</label>
-          <input id="dateOfCreation" class="dateTimeInputField" type="text" placeholder="Type Date" autocomplete="off">
-        </div>
-        <button class="today-btn">Today</button>
-        <div class="flatpickrCalendarContainer">
-          <button class="openflatpickrCalendarBtn">
-            <i class="fa-regular fa-calendar-days"></i>
-          </button>
-          <input type="text" class="flatpickrCalendar" style="display: none;">
-          <input type="text" class="selectedDateInput" style="display: none;">
+          <!-- date format error -->
+          <span class="date-format-error">
+            Invalid date format. Please use the format: YYYY-MM-DD HH:mm:ss zHH:mm
+          </span>
+          <div class="input-group">
+            <input id="dateOfCreation" class="dateTimeInputField" type="text" placeholder="Type Date"
+              autocomplete="off">
+            <button class="today-btn">Today</button>
+            <div class="flatpickrCalendarContainer">
+              <button class="openflatpickrCalendarBtn">
+                <i class="fa-regular fa-calendar-days"></i>
+              </button>
+              <input type="text" class="flatpickrCalendar" style="display: none;">
+              <input type="text" class="selectedDateInput" style="display: none;">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -43,16 +50,23 @@
     <div class="form-container">
       <div class="dateTimeFieldContainer" id="dateOfReportContainer">
         <div class="form-group">
-          <label for="dateOfReport">Date of report</label>
-          <input id="dateOfReport" class="dateTimeInputField" type="text" placeholder="Type Date" autocomplete="off">
-        </div>
-        <button class="today-btn">Today</button>
-        <div class="flatpickrCalendarContainer">
-          <button class="openflatpickrCalendarBtn">
-            <i class="fa-regular fa-calendar-days"></i>
-          </button>
-          <input type="text" class="flatpickrCalendar" style="display: none;">
-          <input type="text" class="selectedDateInput" style="display: none;">
+          <label for="dateOfReport">Date of report first recieved from the source</label>
+          <!-- date format error -->
+          <span class="date-format-error">
+            Invalid date format. Please use the format: YYYY-MM-DD HH:mm:ss zHH:mm
+          </span>
+          <div class="input-group">
+            <input id="dateOfReport" class="dateTimeInputField" type="text" placeholder="Type Date"
+              autocomplete="off">
+            <button class="today-btn">Today</button>
+            <div class="flatpickrCalendarContainer">
+              <button class="openflatpickrCalendarBtn">
+                <i class="fa-regular fa-calendar-days"></i>
+              </button>
+              <input type="text" class="flatpickrCalendar" style="display: none;">
+              <input type="text" class="selectedDateInput" style="display: none;">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -62,16 +76,23 @@
     <div class="form-container">
       <div class="dateTimeFieldContainer" id="otherDateContainer">
         <div class="form-group">
-          <label for="otherDate">Other date</label>
-          <input id="otherDate" class="dateTimeInputField" type="text" placeholder="Type Date" autocomplete="off">
-        </div>
-        <button class="today-btn">Today</button>
-        <div class="flatpickrCalendarContainer">
-          <button class="openflatpickrCalendarBtn">
-            <i class="fa-regular fa-calendar-days"></i>
-          </button>
-          <input type="text" class="flatpickrCalendar" style="display: none;">
-          <input type="text" class="selectedDateInput" style="display: none;">
+          <label for="otherDate">Date of the most recent information for this report</label>
+          <!-- date format error -->
+          <span class="date-format-error">
+            Invalid date format. Please use the format: YYYY-MM-DD HH:mm:ss zHH:mm
+          </span>
+          <div class="input-group">
+            <input id="otherDate" class="dateTimeInputField" type="text" placeholder="Type Date"
+              autocomplete="off">
+            <button class="today-btn">Today</button>
+            <div class="flatpickrCalendarContainer">
+              <button class="openflatpickrCalendarBtn">
+                <i class="fa-regular fa-calendar-days"></i>
+              </button>
+              <input type="text" class="flatpickrCalendar" style="display: none;">
+              <input type="text" class="selectedDateInput" style="display: none;">
+            </div>
+          </div>
         </div>
       </div>
     </div>

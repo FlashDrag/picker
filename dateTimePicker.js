@@ -12,6 +12,7 @@ export default function initDateTimePicker(containerSelector) {
   const userTimezoneName = moment.tz.guess();
   const userTimezoneOffset = moment.tz(userTimezoneName).format("Z");
 
+  const dateFormatError = container.querySelector(".date-format-error");
   const todayButton = container.querySelector(".today-btn");
   const customInput = container.querySelector(".dateTimeInputField");
   const selecteDateInput = container.querySelector(".selectedDateInput");
@@ -37,7 +38,7 @@ export default function initDateTimePicker(containerSelector) {
     defaultDate: "today",
     enableSeconds: true,
     time_24hr: true,
-    positionElement: customInput,
+    positionElement: openCalendarBtn,
     appendTo: container,
     onReady: function (selectedDates, dateStr, instance) {
       // Add timezone dropdown to the calendar
@@ -99,11 +100,14 @@ export default function initDateTimePicker(containerSelector) {
       // nullflavorDropdown.style.color = "#999";
 
       // if custom input has a value,
-      // set the flatpickrCalendar instance to the custom input value
-      const customInputValue = parseDateFromCustomInput(customInput.value);
+      // parse the date and time from the custom input and set the flatpickrCalendar instance to the custom input value
+      const parsedDateObj = parseDateFromCustomInput(customInput.value);
 
-      if (customInputValue !== "invalid") {
-        instance.setDate(customInputValue);
+      if (parsedDateObj) {
+        console.log("isTimezoneIncluded: ", parsedDateObj.isTimezoneIncluded);
+        console.log("parsedDate: ", parsedDateObj.parsedDate);
+        activateSelector(parsedDateObj.granularity);
+        instance.setDate(parsedDateObj.parsedDate);
       } else {
         // Capture the current year
         dateParts.year = instance.currentYear;
@@ -234,6 +238,8 @@ export default function initDateTimePicker(containerSelector) {
   // listener for clearBtn,
   // clear the flatpickrCalendar instance, openCalendar input and custom input fields
   clearBtn.addEventListener("click", function () {
+    customInput.style.border = "1px solid #767676";
+    dateFormatError.style.display = "none";
     customInput.value = "";
 
     resetflatpickrCalendar();
@@ -243,7 +249,8 @@ export default function initDateTimePicker(containerSelector) {
   // Insert the selected datetime into the custom input field by clicking the apply button
   applyBtn.addEventListener("click", function () {
     customInput.value = selecteDateInput.value;
-    customInput.style.border = "1px solid #ccc";
+    customInput.style.border = "1px solid #767676";
+    dateFormatError.style.display = "none";
 
     // close flatpickrCalendar
     fpCalendar.close();
@@ -493,15 +500,22 @@ export default function initDateTimePicker(containerSelector) {
   /**
    * Parse and validate the date from the custom input field
    * @param {string} dateStr - The date string from the custom input field
-   * @returns {Date} - The parsed date
+   * @returns {object} - The parsed date, timezone, and granularity
    */
   function parseDateFromCustomInput(dateStr) {
+    let timezone = "";
+
     if (dateStr === "") {
-      return "invalid";
+      customInput.style.border = "1px solid #767676";
+      dateFormatError.style.display = "none";
+      return null;
     }
     const formats = [
+      { format: "YYYY-MM-DD HH:mm:ss [z]Z", granularity: "second" },
       { format: "YYYY-MM-DD HH:mm:ss", granularity: "second" },
+      { format: "YYYY-MM-DD HH:mm [z]Z", granularity: "minute"},
       { format: "YYYY-MM-DD HH:mm", granularity: "minute" },
+      { format: "YYYY-MM-DD HH [z]Z", granularity: "hour" },
       { format: "YYYY-MM-DD HH", granularity: "hour" },
       { format: "YYYY-MM-DD", granularity: "day" },
       { format: "YYYY-MM", granularity: "month" },
@@ -512,17 +526,27 @@ export default function initDateTimePicker(containerSelector) {
       // true for strict parsing
       const parsedDate = moment(dateStr, format, true);
       if (parsedDate.isValid()) {
+        if (format.includes("[z]Z")) {
+          // get timezone from the date string
+          console.log("timezone: ", "");
+          timezone = ""
+
+          format = format.replace(" [z]Z", "");
+        }
+        // FIXME
         selecteDateInput.value = parsedDate.format(format);
-        activateSelector(granularity);
-        customInput.style.border = "1px solid #ccc";
-        return parsedDate.toDate();
+
+        customInput.style.border = "1px solid #767676";
+        dateFormatError.style.display = "none";
+        return { parsedDate: parsedDate.toDate(), timezone, granularity };
       }
     }
 
     console.error("Invalid date format");
     // make the custom input field red
     customInput.style.border = "1px solid red";
-    return "invalid";
+    dateFormatError.style.display = "block";
+    return null;
   }
   // ./ ---FUNCTIONS---
 }

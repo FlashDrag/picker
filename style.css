@@ -19,14 +19,40 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
 }
 
 .form-group {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
+
 .form-group label {
-  display: block;
   margin-bottom: 5px;
+}
+
+.dateTimeFieldContainer {
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.input-group > * {
+  margin-right: 5px;
+}
+
+.dateTimeInputField {
+  flex-grow: 1;
+}
+
+.date-format-error {
+  display: none;
+  color: #c40000;
 }
 
 /* Buttons */
