@@ -5,6 +5,7 @@
 export default function initDateTimePicker(containerSelector) {
   const container = document.querySelector(containerSelector);
 
+  let selectedDateInput = "";
   const dateParts = { year: "", month: "", day: "" };
   const timeParts = { hour: "", minute: "", second: "", timezone: "" };
 
@@ -15,7 +16,6 @@ export default function initDateTimePicker(containerSelector) {
   const dateFormatError = container.querySelector(".date-format-error");
   const todayButton = container.querySelector(".today-btn");
   const customInput = container.querySelector(".dateTimeInputField");
-  const selecteDateInput = container.querySelector(".selectedDateInput");
   const openCalendarBtn = container.querySelector(".openflatpickrCalendarBtn");
 
   // let yearSelector;
@@ -251,7 +251,7 @@ export default function initDateTimePicker(containerSelector) {
   // listener for applyBtn,
   // Insert the selected datetime into the custom input field by clicking the apply button
   applyBtn.addEventListener("click", function () {
-    customInput.value = selecteDateInput.value;
+    customInput.value = selectedDateInput;
     customInput.style.border = "1px solid #767676";
     dateFormatError.style.display = "none";
 
@@ -318,7 +318,7 @@ export default function initDateTimePicker(containerSelector) {
 
     // Construct the date format string
     // utcOffset is used to set the timezone offset but it doesn't change time provided by the user
-    selecteDateInput.value = moment(selectedDate, dateFormat)
+    selectedDateInput = moment(selectedDate, dateFormat)
       .utcOffset(timeZoneOffset, true)
       .format(dateFormat);
   }
@@ -474,7 +474,7 @@ export default function initDateTimePicker(containerSelector) {
    */
   function resetflatpickrCalendar() {
     fpCalendar.setDate("today");
-    selecteDateInput.value = fpCalendar.currentYear;
+    selectedDateInput = fpCalendar.currentYear;
 
     monthPickerDropdown.style.opacity = 0.4;
     datePickerContainer.style.opacity = 0.4;
@@ -528,7 +528,6 @@ export default function initDateTimePicker(containerSelector) {
     for (let { format, granularity } of formats) {
       // true for strict parsing
       const parsedDateMoment = moment(dateStr, format, true);
-      let parsedDate = null;
 
       if (parsedDateMoment.isValid()) {
         if (format.includes("[z]Z")) {
@@ -539,23 +538,19 @@ export default function initDateTimePicker(containerSelector) {
           timezoneOffset = timezoneMatch ? timezoneMatch[0] : null;
 
           // remove the timezone from the format
-          format = format.replace(" [z]Z", "");
+          // format = format.replace(" [z]Z", "");
 
           // set the time back to the original timezone, so that the time doesn't change
           // since the time was changed with the timezone offset provided by the user
-          const dateWithOriginalTimezone = parsedDateMoment.utcOffset(timezoneOffset, false).format(format);
-
-          selecteDateInput.value = dateWithOriginalTimezone;
-          parsedDate = dateWithOriginalTimezone;
+          selectedDateInput = parsedDateMoment.utcOffset(timezoneOffset, false).format(format);
         } else {
-          selecteDateInput.value = parsedDateMoment.format(format);
-          parsedDate = parsedDateMoment.toDate();
+          selectedDateInput = parsedDateMoment.format(format);
         }
 
         customInput.style.border = "1px solid #767676";
         dateFormatError.style.display = "none";
 
-        return { parsedDate, timezoneOffset, granularity };
+        return { parsedDate: selectedDateInput, timezoneOffset, granularity };
       }
     }
 
