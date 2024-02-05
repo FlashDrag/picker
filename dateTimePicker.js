@@ -204,7 +204,7 @@ export default function initDateTimePicker(containerSelector) {
   // If the user changes the hour manually by typing, update the timeParts.hour
   hourSelector.addEventListener("change", function (e) {
     const selectedHour = Number(e.target.value);
-    if (selectedHour && selectedHour >= 0 && selectedHour <= 23) {
+    if (selectedHour !== NaN && selectedHour >= 0 && selectedHour <= 23) {
       timeParts.hour = selectedHour;
       constructDatetimeString();
     }
@@ -221,7 +221,7 @@ export default function initDateTimePicker(containerSelector) {
   // If the user changes the minute manually by typing, update the timeParts.minute
   minuteSelector.addEventListener("change", function (e) {
     const selectedMinutes = Number(e.target.value);
-    if (selectedMinutes && selectedMinutes >= 0 && selectedMinutes <= 59) {
+    if (selectedMinutes !== NaN && selectedMinutes >= 0 && selectedMinutes <= 59) {
       timeParts.minute = selectedMinutes;
       constructDatetimeString();
     }
@@ -238,7 +238,7 @@ export default function initDateTimePicker(containerSelector) {
   // If the user changes the second manually by typing, update the timeParts.second
   secondSelector.addEventListener("change", function (e) {
     const selectedSeconds = Number(e.target.value);
-    if (selectedSeconds && selectedSeconds >= 0 && selectedSeconds <= 59) {
+    if (selectedSeconds !== NaN && selectedSeconds >= 0 && selectedSeconds <= 59) {
       timeParts.second = selectedSeconds;
       constructDatetimeString();
     }
