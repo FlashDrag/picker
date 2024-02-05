@@ -184,17 +184,6 @@ export default function initDateTimePicker(containerSelector) {
     parseDateFromCustomInput(e.target.value);
   });
 
-  // listener for yearSelector,
-  // when the user clicks on it, the new year is captured
-  // TODO: remove yearSelector
-  // yearSelector.addEventListener("click", function (e) {
-  //   // Capture the current year
-  //   const currentYear = fpCalendar.currentYear;
-  //   dateParts.year = currentYear;
-
-  //   constructDatetimeString();
-  // });
-
   // listener for monthDropdown,
   // when the user first time clicks on it, month is captured
   monthPickerDropdown.addEventListener("click", function (e) {
@@ -212,6 +201,14 @@ export default function initDateTimePicker(containerSelector) {
       constructDatetimeString();
     }
   });
+  // If the user changes the hour manually by typing, update the timeParts.hour
+  hourSelector.addEventListener("change", function (e) {
+    const selectedHour = Number(e.target.value);
+    if (selectedHour && selectedHour >= 0 && selectedHour <= 23) {
+      timeParts.hour = selectedHour;
+      constructDatetimeString();
+    }
+  });
 
   // listener for minuteSelector,
   // reset opacity of minute picker and timezone when the user first time clicks on it
@@ -221,12 +218,28 @@ export default function initDateTimePicker(containerSelector) {
       constructDatetimeString();
     }
   });
+  // If the user changes the minute manually by typing, update the timeParts.minute
+  minuteSelector.addEventListener("change", function (e) {
+    const selectedMinutes = Number(e.target.value);
+    if (selectedMinutes && selectedMinutes >= 0 && selectedMinutes <= 59) {
+      timeParts.minute = selectedMinutes;
+      constructDatetimeString();
+    }
+  });
 
   // listener for secondSelector,
   // reset opacity of second
   secondSelector.addEventListener("click", function (e) {
     if (!secondSelector.classList.contains("active")) {
       activateSecondSelector();
+      constructDatetimeString();
+    }
+  });
+  // If the user changes the second manually by typing, update the timeParts.second
+  secondSelector.addEventListener("change", function (e) {
+    const selectedSeconds = Number(e.target.value);
+    if (selectedSeconds && selectedSeconds >= 0 && selectedSeconds <= 59) {
+      timeParts.second = selectedSeconds;
       constructDatetimeString();
     }
   });
@@ -516,7 +529,7 @@ export default function initDateTimePicker(containerSelector) {
     const formats = [
       { format: "YYYY-MM-DD HH:mm:ss [z]Z", granularity: "second" },
       { format: "YYYY-MM-DD HH:mm:ss", granularity: "second" },
-      { format: "YYYY-MM-DD HH:mm [z]Z", granularity: "minute"},
+      { format: "YYYY-MM-DD HH:mm [z]Z", granularity: "minute" },
       { format: "YYYY-MM-DD HH:mm", granularity: "minute" },
       { format: "YYYY-MM-DD HH [z]Z", granularity: "hour" },
       { format: "YYYY-MM-DD HH", granularity: "hour" },
