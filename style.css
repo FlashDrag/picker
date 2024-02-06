@@ -110,27 +110,6 @@ body {
   background-color: #eae9e9;
 }
 
-/* Selectors container */
-.selectors-container {
-  display: flex;
-  flex-direction: column;
-}
-
-/* nullFlavor */
-#nullflavorDropdown {
-  width: 100%;
-  margin-bottom: 5px;
-  color: #000000;
-}
-
-#nullflavorDropdown option {
-  color: #000000;
-}
-
-#nullflavorDropdown, #nullflavorDropdown option[value=""], #nullflavorDropdown:invalid {
-  color: #999;
-}
-
 /* Timepicker */
 .flatpickr-hour-wrapper, .flatpickr-minute-wrapper, .flatpickr-second-wrapper,
 .flatpickr-innerContainer,
@@ -145,4 +124,41 @@ body {
   cursor: pointer;
   border: none;
   opacity: 0.4;
+}
+
+/* nullFlavor */
+.nullflavorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.nullflavor-radio-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.nullflavorContainer .nullFlavorLabel {
+  margin: 0;
+  padding: 0;
+}
+
+.nullflavor-radio-buttons > * {
+  margin-right: 10px;
+}
+
+#nullflavorDropdown {
+  width: 100%;
+  margin-bottom: 5px;
+  color: #000000;
+}
+
+#nullflavorDropdown option {
+  color: #000000;
+}
+
+#nullflavorDropdown, #nullflavorDropdown option[value=""], #nullflavorDropdown:invalid {
+  color: #999;
 }

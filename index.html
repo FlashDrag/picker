@@ -52,6 +52,44 @@
       <div class="dateTimeFieldContainer" id="dateOfReportContainer">
         <div class="form-group">
           <label for="dateOfReport">Date of report first recieved from the source</label>
+
+          <!-- Nullflavor -->
+          <div class="nullflavorContainer">
+            <label class="nullFlavorLabel">NullFlavor</label>
+
+            <div class="nullflavor-radio-buttons">
+              <div>
+                <input type="radio" id="yes" name="nullFlavor" value="true">
+                <label for="yes">Yes</label><br>
+              </div>
+
+              <div>
+                <input type="radio" id="no" name="nullFlavor" value="false">
+                <label for="no">No</label><br>
+              </div>
+
+              <div>
+                <input type="radio" id="notSpecified" name="nullFlavor" value="None">
+                <label for="notSpecified">Not Specified</label>
+              </div>
+            </div>
+
+            <div class="nullFlavorDropdownWrapper">
+              <select id="nullFlavorOptions">
+                <option value="" selected>Select nullflavor</option>
+                <option value="NI">No Information (NI)</option>
+                <option value="MSK">Masked (MSK)</option>
+                <option value="UNK">Unknown (UNK)</option>
+                <option value="NA">Not Applicable (NA)</option>
+                <option value="ASKU">Asked But Unknown (ASKU)</option>
+                <option value="NASK">Not Asked (NASK)</option>
+                <option value="NINF">Negative Infinity (NINF)</option>
+                <option value="PINF">Positive Infinity (PINF)</option>
+              </select>
+            </div>
+          </div>
+          <!-- ./Nullflavor -->
+
           <!-- date format error -->
           <span class="date-format-error">
             <small>Invalid date format. Please use the format:</small> <code>YYYY-MM-DD HH:mm:ss z+-HH:mm</code>
@@ -59,8 +97,7 @@
             <small>Example: 2023-01-01 08:00:00 z+05:30</small>
           </span>
           <div class="input-group">
-            <input id="dateOfReport" class="dateTimeInputField" type="text" placeholder="Type Date"
-              autocomplete="off">
+            <input id="dateOfReport" class="dateTimeInputField" type="text" placeholder="Type Date" autocomplete="off">
             <button class="today-btn">Today</button>
             <div class="flatpickrCalendarContainer">
               <button class="openflatpickrCalendarBtn">
@@ -86,8 +123,7 @@
             <small>Example: 2023-01-01 08:00:00 z+05:30</small>
           </span>
           <div class="input-group">
-            <input id="otherDate" class="dateTimeInputField" type="text" placeholder="Type Date"
-              autocomplete="off">
+            <input id="otherDate" class="dateTimeInputField" type="text" placeholder="Type Date" autocomplete="off">
             <button class="today-btn">Today</button>
             <div class="flatpickrCalendarContainer">
               <button class="openflatpickrCalendarBtn">
