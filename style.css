@@ -18,12 +18,12 @@ body {
   width: 100%;
 }
 
-.nullflavorWrapper input {
+.nullflavorContainer input {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.nullflavorWrapper select {
+.nullflavorContainer select {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
