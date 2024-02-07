@@ -77,7 +77,28 @@
     <br>
 
     <div class="form-container">
-      <label for="otherDate">Other date with Nullflavor selector</label>
+      <label for="otherDate">Other date field with Nullflavor selector</label>
+
+      <div class="d-flex">
+        <label class="me-2">NullFlavor?</label>
+        <input type="checkbox" class="form-check-input">
+      </div>
+      <!-- Nullflavor -->
+      <div class="nullflavorContainer d-none">
+        <input class="form-control" type="text" placeholder="Type Nullflavor" autocomplete="off">
+        <select class="nullFlavorOptions form-select w-auto">
+          <option value="" selected>Select nullflavor</option>
+          <option value="NI">No Information (NI)</option>
+          <option value="MSK">Masked (MSK)</option>
+          <option value="UNK">Unknown (UNK)</option>
+          <option value="NA">Not Applicable (NA)</option>
+          <option value="ASKU">Asked But Unknown (ASKU)</option>
+          <option value="NASK">Not Asked (NASK)</option>
+          <option value="NINF">Negative Infinity (NINF)</option>
+          <option value="PINF">Positive Infinity (PINF)</option>
+        </select>
+      </div>
+      <!-- ./Nullflavor -->
 
       <div class="dateTimeFieldContainer" id="otherDateContainer">
         <div class="form-group">
