@@ -119,7 +119,7 @@ function createTimezoneDropdown(userTimezone) {
   const timezone_names = moment.tz.names();
   // Create select element and populate timezone dropdown with options
   const timezoneSelector = document.createElement("select");
-  timezoneSelector.classList.add("timezoneSelector");
+  timezoneSelector.classList.add("timezoneSelector", "form-select");
 
   timezone_names.forEach((timezone) => {
     let timezoneOffset = moment.tz(timezone).format("Z");
@@ -138,12 +138,12 @@ function createTimezoneDropdown(userTimezone) {
 
 function createClearApplyBtns() {
   const clearApplyBtnContainer = document.createElement("div");
-  clearApplyBtnContainer.classList.add("clearApplyBtnContainer");
+  clearApplyBtnContainer.classList.add("clearApplyBtnContainer", "p-2");
   const clearBtn = document.createElement("button");
-  clearBtn.classList.add("clearBtn");
+  clearBtn.classList.add("clearBtn", "btn", "btn-outline-secondary", "btn-sm", "me-2");
   clearBtn.innerHTML = "Clear";
   const applyBtn = document.createElement("button");
-  applyBtn.classList.add("applyBtn");
+  applyBtn.classList.add("applyBtn", "btn", "btn-info", "btn-sm");
   applyBtn.innerHTML = "Apply";
 
   clearApplyBtnContainer.appendChild(clearBtn);
