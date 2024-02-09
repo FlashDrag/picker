@@ -67,6 +67,7 @@ function initializeFlatpickr(
     defaultDate: "today",
     enableSeconds: true,
     time_24hr: true,
+    // maxDate: 'today',
     positionElement: uiElements.openCalendarBtn,
     appendTo: container,
     onReady: (selectedDates, dateStr, instance) =>
