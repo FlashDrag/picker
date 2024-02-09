@@ -63,4 +63,24 @@ document.addEventListener("DOMContentLoaded", function () {
       // Setup event listener for change on the checkbox
       checkbox.addEventListener("change", toggleContainers);
     });
+
+  // Enable tooltips
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+
+  // Close tooltips when clicking on the close button inside the tooltip
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+    if (target.classList.contains("close-tooltip")) {
+      const tooltip = target.closest(".tooltip");
+      if (tooltip) {
+        const tooltipInstance = bootstrap.Tooltip.getInstance(tooltip);
+        tooltipInstance.hide();
+      }
+    }
+  });
 });

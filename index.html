@@ -26,7 +26,21 @@
   <div class="container">
 
     <div class="form-container">
-      <label for="dateOfCreation">Date of creation</label>
+      <label for="dateOfCreation">
+        <span class="position-relative">
+          Date of creation
+          <span class="position-absolute top-0 end-25 translate-middle badge border border-light rounded-circle p-0 cursor-pointer">
+            <i class="fa fa-info-circle text-muted" data-bs-html="true" data-bs-toggle="tooltip"
+              data-bs-placement="right" data-bs-trigger="click" data-tooltip-id="C.1.2-tooltip"
+              title="
+                C.1.2 Date of Creation <br>
+                This data element has the function of a timestamp and represents the equivalent of a version number for the ICSR.
+                Every ICSR and every iteration (e.g. version) of an ICSR in a safety message must have a different value for Date of Creation. The most recent version of an ICSR will have the most recent date; previous versions of an ICSR will have older dates.
+                <br><i class='fa fa-times-circle close-tooltip'></i>
+                "></i>
+          </span>
+        </span>
+      </label>
 
       <div class="dateTimeFieldContainer" id="dateOfCreationContainer">
         <div class="form-group">

@@ -9,6 +9,10 @@ body {
   padding: 50px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .container {
   max-width: 700px;
   margin: 0 auto;
@@ -85,4 +89,43 @@ body {
 #nullflavorDropdown option[value=""],
 #nullflavorDropdown:invalid {
   color: #999;
+}
+
+.tooltip-inner {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #a4a4a4;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  max-width: 600px;
+  text-align: left;
+}
+
+.bs-tooltip-end .tooltip-arrow::before{
+  border-right-color: #a4a4a4;
+
+}
+.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: #a4a4a4;
+}
+.bs-tooltip-start .tooltip-arrow::before {
+  border-left-color: #a4a4a4;
+}
+.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: #a4a4a4;
+}
+
+.tooltip.show {
+  opacity: 0.9;
+}
+
+.close-tooltip {
+  cursor:pointer;
+  font-weight: bold;
+  /* font-size: 16px; */
+  color: #a4a4a4;
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
